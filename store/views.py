@@ -43,3 +43,4 @@ def checkout(request):
 
 def updateItem(request):
 	return JsonResponse("Item added successfully", safe=False)
+
