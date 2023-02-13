@@ -4,6 +4,7 @@ for (const element of updateBtns) {
     element.addEventListener('click', function () {
         let productId = this.dataset.product
         let action = this.dataset.action
+
         console.log('productID:', productId, 'action:', action)
         // user = this.dataset.user
         console.log(user)
@@ -11,8 +12,26 @@ for (const element of updateBtns) {
         if (user === 'AnonymousUser') {
             console.log("User not logged in")
         } else {
-            console.log("User not logged in")
+            updateUserOrder(productId, action)
         }
+    })
+}
+
+function updateUserOrder(productId, action) {
+    let url = '/update_item/'
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({'productId': productId, 'action': action})
+    })
+    .then(response => {
+        return response.json()
+    })
+    .then(data => {
+        console.log('data: ', data)
     })
 }
 
