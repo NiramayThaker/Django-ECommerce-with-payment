@@ -70,12 +70,26 @@
     </div>
 
     <script type="text/javascript">
-        let shipping = '{{ order.shipping }}'
 
+    // Will not display checkout form to user if item is digital
+        let shipping = '{{ order.shipping }}'
         if(shipping === 'False'){
             document.getElementById('shipping-info').innerHTML = ''
         }
 
+    // don't display name and email field if user is authenticated
+        if(user !== 'AnonymousUser'){
+            document.getElementById('user-info').innerHTML = ''
+        }
+
+        if (shipping === 'False' && user !== 'AnonymousUser'){
+            //Hide entire form if user is logged in and shipping is false
+            document.getElementById('form-wrapper').classList.add("hidden");
+            //Show payment if logged in user wants to buy an item that does not require shipping
+            document.getElementById('payment-info').classList.remove("hidden");
+        }
+
+    // Adding event-handler to form submit btn which when triggered will hide submit btn and display payment method
         let form = document.getElementById('form')
         form.addEventListener('submit', function (e) {
             e.preventDefault()
@@ -87,10 +101,12 @@
         document.getElementById('make-payment').addEventListener('click', function(e){
             submitFormData()
         })
-        
+
+    // Adding logic to payment btn
         function submitFormData() {
             console.log("Payment btn clicked")
         }
+
 
     </script>
 
