@@ -36,7 +36,6 @@ function updateUserOrder(productId, action) {
     })
 }
 
-
 // let updateBtns = document.getElementsByClassName('update-cart')
 //
 // for (let i = 0; i < updateBtns.length; i++) {
