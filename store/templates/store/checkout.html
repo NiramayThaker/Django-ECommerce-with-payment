@@ -58,38 +58,40 @@
                 {% for item in items %}
                     <div class="cart-row">
                         <div style="flex:2"><img class="row-image" src="{{ item.product.image.url }}"></div>
-                        <div style="flex:2"><p>{{ item.product.name}}</p></div>
+                        <div style="flex:2"><p>{{ item.product.name }}</p></div>
                         <div style="flex:1"><p>{{ item.prodcut.price | floatformat:2 }}</p></div>
                         <div style="flex:1"><p>x{{ item.quantity }}</p></div>
                     </div>
                 {% endfor %}
                 <h5>Items: {{ order.get_cart_items }}</h5>
-                <h5>Total: ${{ order.get_cart_total | floatformat:2}}</h5>
+                <h5>Total: ${{ order.get_cart_total | floatformat:2 }}</h5>
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
 
-    // Will not display checkout form to user if item is digital
+        // Will not display checkout form to user if item is digital
         let shipping = '{{ order.shipping }}'
-        if(shipping === 'False'){
+        let total = '{{ order.get_cart_total | floatformat: 2}}'
+
+        if (shipping === 'False') {
             document.getElementById('shipping-info').innerHTML = ''
         }
 
-    // don't display name and email field if user is authenticated
-        if(user !== 'AnonymousUser'){
+        // don't display name and email field if user is authenticated
+        if (user !== 'AnonymousUser') {
             document.getElementById('user-info').innerHTML = ''
         }
 
-        if (shipping === 'False' && user !== 'AnonymousUser'){
+        if (shipping === 'False' && user !== 'AnonymousUser') {
             //Hide entire form if user is logged in and shipping is false
             document.getElementById('form-wrapper').classList.add("hidden");
             //Show payment if logged in user wants to buy an item that does not require shipping
             document.getElementById('payment-info').classList.remove("hidden");
         }
 
-    // Adding event-handler to form submit btn which when triggered will hide submit btn and display payment method
+        // Adding event-handler to form submit btn which when triggered will hide submit btn and display payment method
         let form = document.getElementById('form')
         form.addEventListener('submit', function (e) {
             e.preventDefault()
@@ -98,13 +100,40 @@
             document.getElementById('payment-info').classList.remove('hidden')
         })
 
-        document.getElementById('make-payment').addEventListener('click', function(e){
+        document.getElementById('make-payment').addEventListener('click', function (e) {
             submitFormData()
         })
 
-    // Adding logic to payment btn
+        // Adding logic to payment btn
         function submitFormData() {
             console.log("Payment btn clicked")
+
+            let userFormData = {
+                'name': null,
+                'email': null,
+                'total': total,
+            }
+            let shippingInfo = {
+                'city': null,
+                'address': null,
+                'state': null,
+                'zipcode': null,
+            }
+
+            if (shipping !== 'False'){
+                shippingInfo.address = form.address.value
+                shippingInfo.city = form.city.value
+                shippingInfo.state = form.state.value
+                shippingInfo.zipcode = form.zipcode.value
+            }
+
+            if (user === 'AnonymousUser'){
+                userFormData.name = form.name.value
+                userFormData.email = form.email.value
+             }
+
+            console.log('Shipping Info:', shippingInfo)
+            console.log('User Info:', userFormData)
         }
 
 
