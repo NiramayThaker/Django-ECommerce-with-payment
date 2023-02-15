@@ -16,7 +16,8 @@ def store(request):
 	else:
 		items = []
 		order = {'get_cart_total': 0,
-				 'get_cart_items': 0
+				 'get_cart_items': 0,
+				 "shipping": "False"
 				 }
 		cart_items = order['get_cart_items']
 
@@ -33,7 +34,8 @@ def cart(request):
 	else:
 		items = []
 		order = {'get_cart_total': 0,
-				 'get_cart_items': 0
+				 'get_cart_items': 0,
+				 "shipping": "False"
 				 }
 
 	context = {'items': items, 'order': order}
@@ -47,7 +49,7 @@ def checkout(request):
 		items = order.orderitem_set.all()
 	else:
 		# Create Empty cart for now for none-logged in users
-		order = {'get_cart_total': 0, "get_cart_items": 0}
+		order = {'get_cart_total': 0, "get_cart_items": 0, "shipping": "False"}
 		items = []
 
 	context = {"items": items, "order": order}
