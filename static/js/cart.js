@@ -27,13 +27,13 @@ function updateUserOrder(productId, action) {
         },
         body: JSON.stringify({'productId': productId, 'action': action})
     })
-    .then(response => {
-        return response.json()
-    })
-    .then(data => {
-        console.log('data: ', data)
-        location.reload()
-    })
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            console.log('data: ', data)
+            location.reload()
+        })
 }
 
 // let updateBtns = document.getElementsByClassName('update-cart')

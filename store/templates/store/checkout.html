@@ -74,7 +74,7 @@
 
         // Will not display checkout form to user if item is digital
         let shipping = '{{ order.shipping }}'
-        let total = '{{ order.get_cart_total | floatformat:2}}'
+        var total = '{{ order.get_cart_total}}'
 
         if (shipping === 'False') {
             document.getElementById('shipping-info').innerHTML = ''
@@ -109,29 +109,29 @@
         function submitFormData() {
             console.log("Payment btn clicked")
 
-            let userFormData = {
+            var userFormData = {
                 'name': null,
                 'email': null,
-                'total': total,
+                'total': total
             }
-            let shippingInfo = {
+            var shippingInfo = {
                 'city': null,
                 'address': null,
                 'state': null,
-                'zipcode': null,
+                'zipcode': null
             }
 
-            if (shipping !== 'False'){
+            if (shipping !== 'False') {
                 shippingInfo.address = form.address.value
                 shippingInfo.city = form.city.value
                 shippingInfo.state = form.state.value
                 shippingInfo.zipcode = form.zipcode.value
             }
 
-            if (user === 'AnonymousUser'){
+            if (user === 'AnonymousUser') {
                 userFormData.name = form.name.value
                 userFormData.email = form.email.value
-             }
+            }
 
             console.log('Shipping Info:', shippingInfo)
             console.log('User Info:', userFormData)
@@ -140,12 +140,12 @@
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
                     'X-CSRFToken': csrftoken,
                 },
                 body: JSON.stringify({'form': userFormData, 'shipping': shippingInfo})
             })
-            .then((response) => response.json())
+                .then((response) => response.json())
                 .then((data) => {
                     console.log("Success: ", data)
                     alert("Transaction Completed")
