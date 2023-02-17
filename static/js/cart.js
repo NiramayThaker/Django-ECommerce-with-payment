@@ -9,12 +9,16 @@ for (const element of updateBtns) {
         // user = this.dataset.user
         console.log(user)
 
-        if (user === 'AnonymousUser') {
-            console.log("User not logged in")
+        if (user == 'AnonymousUser') {
+            addCookieItem(productId, action)
         } else {
             updateUserOrder(productId, action)
         }
     })
+}
+
+function addCookieItem(productId, action) {
+    console.log("Unauthenticated User")
 }
 
 function updateUserOrder(productId, action) {
