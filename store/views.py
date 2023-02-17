@@ -21,6 +21,7 @@ def store(request):
 				 'get_cart_items': 0,
 				 "shipping": "False"
 				 }
+
 		cart_items = order['get_cart_items']
 
 	context = {'products': products, 'cart_items': cart_items, 'order': order}
@@ -34,11 +35,21 @@ def cart(request):
 		# It will get all the orderItems which will have "order" as parent
 		items = order.orderitem_set.all()
 	else:
+		try:
+			cart = json.loads(request.COOKIES['cart'])
+		except:
+			cart = {}
+		print('cart: ', cart)
+
 		items = []
 		order = {'get_cart_total': 0,
 				 'get_cart_items': 0,
 				 "shipping": "False"
 				 }
+
+		cart_items = order['get_cart_items']
+		for i in cart:
+			cart_items += cart[i]['quantity']
 
 	context = {'items': items, 'order': order}
 	return render(request, 'store/cart.html', context=context)
@@ -104,11 +115,10 @@ def processOrder(request):
 				address=data['shipping']['address'],
 				city=data['shipping']['city'],
 				state=data['shipping']['state'],
-				zipcode = data['shipping']['zipcode'],
+				zipcode=data['shipping']['zipcode'],
 			)
 
 	else:
 		return JsonResponse("User not logged in .!", safe=False)
 
 	return JsonResponse("Payment successfully", safe=False)
-
